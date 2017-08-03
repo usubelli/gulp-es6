@@ -1,0 +1,85 @@
+@mixin prefix($property, $value, $prefixes: ()) {
+  @each $prefix in $prefixes {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+
+  #{$property}: $value;
+}
+
+
+@mixin keyframes($animation-name) {
+    @-webkit-keyframes #{$animation-name} {
+        @content;
+    }
+    @-moz-keyframes #{$animation-name} {
+        @content;
+    }  
+    @-ms-keyframes #{$animation-name} {
+        @content;
+    }
+    @-o-keyframes #{$animation-name} {
+        @content;
+    }  
+    @keyframes #{$animation-name} {
+        @content;
+    }
+}
+ 
+ 
+@mixin transform($value) {
+      @include prefix(transform, $value, webkit);
+}
+@mixin column-count($value) {
+      @include prefix(column-count, $value, webkit);
+}
+@mixin transition($value) {
+      @include prefix(transition, $value, webkit);
+}
+@mixin animation($value) {
+      @include prefix(animation, $value, webkit);
+}
+
+
+@mixin size($width, $height: $width) {
+      width: $width;
+      height: $height;
+}
+
+$breakpoints: (
+  'xs':   ( max-width:  467px ),
+  'sm':  ( max-width:  768px ),
+  'md': ( max-width:  992px ),
+  'lg':  ( max-width: 1200px ),
+  'xlg':  ( max-width: 1400px ),
+  'min-xlg':  ( min-width: 1400px ),
+  'min-lg':  ( min-width: 1201px )
+
+);
+
+@mixin breakpoint($name) {
+      @if map-has-key($breakpoints, $name) {
+        @media #{inspect(map-get($breakpoints, $name))} {
+      @content;
+    }
+  }
+  @else {
+    @warn "Couldn't find a breakpoint named `#{$name}`.";
+  }
+}
+
+@mixin mediaqueries($name) {
+      @if map-has-key($name) {
+        @media #{inspect(map-get($name))} {
+      @content;
+    }
+  }
+  @else {
+    @warn "Couldn't find a breakpoint named `#{$name}`.";
+  }
+}
+
+/*
+@include breakpoint(medium) {
+    color: blue;
+  }
+}*/
